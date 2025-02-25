@@ -106,6 +106,13 @@ bool windows_remap(uint16_t keycode, keyrecord_t *record) {
                     tap_code16(S(KC_7));
                 }
                 return false;
+            case KC_GRV:
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code16(S(KC_LBRC));
+                } else {
+                    tap_code16(S(KC_EQL));
+                }
+                return false;
         }
         print("not matched\n");
         xprintf("keycode: %d\n", keycode);
