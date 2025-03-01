@@ -32,7 +32,6 @@
   * 
   * https://qmk.fm/toolbox toolbox公式
  */
-
 #include "os_detection.h"
 #include "keymap.h"
 #include QMK_KEYBOARD_H
@@ -41,20 +40,26 @@
 #include "windows_remap.h"
 uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS];
 
-// #ifdef WIN_BASE
-//     xprintf("for windows");
-//     #define CONTROLL_KEY KC_LCTL
-//     #define WINDOWS_KEY KC_LCMMD
-//     #define COMMAND_LKEY KC_LOPTN
-//     #define COMMAND_RKEY KC_ROPTN
-// #else
-//     #define CONTROLL_KEY KC_LCMMD
-//     #define WINDOWS_KEY KC_LOPTN
-//     #define COMMAND_LKEY KC_LCMMD
-//     #define COMMAND_RKEY KC_RCMMD
-// #endif
+typedef const uint16_t comb_keys_t[];
+static PROGMEM comb_keys_t
+    // enter + |, ], 'の同時押しをタイポとみなし何も入力していないことにする
+    cancel_ent_bsls_combo = {KC_ENT, KC_BSLS, COMBO_END},
+    cancel_ent_rbrc_combo = {KC_ENT, KC_RBRC, COMBO_END},
+    cancel_ent_quot_combo = {KC_ENT, KC_QUOT, COMBO_END},
+    // マイナス + 0, =の同時押しをタイポとみなし何も入力していないことにする
+    cancel_mins_0_combo = {KC_MINS, KC_0, COMBO_END},
+    cancel_mins_eql_combo = {KC_MINS, KC_EQL, COMBO_END},
+    // windowsのalt単押しの挙動ができなくなってしまったため別の操作でalt単押しを実現する
+    alt_spc_to_alt_for_win_combo = {KC_RALT, KC_SPC};
 
-void matrix_scan_user(void) {}
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(cancel_ent_bsls_combo, KC_F13),  // Enter + | → F13
+    COMBO(cancel_ent_rbrc_combo, KC_F13),  // Enter + ] → F13
+    COMBO(cancel_ent_quot_combo, KC_F13),  // Enter + ' → F13
+    COMBO(cancel_mins_0_combo, KC_F13),  // マイナス + 0 → F13
+    COMBO(cancel_mins_eql_combo, KC_F13),  // マイナス + = → F13
+    COMBO(alt_spc_to_alt_for_win_combo, KC_RALT), // alt + spc → KC_ALT
+};
 
 // keyを押された時、離された時にtrueを返すとkeyが押された、離されたという挙動になる
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -65,7 +70,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // シリアル出力で位置を表示
     xprintf("Key pressed: row = %d, col = %d, keycode = %d\n", row, col, keycode);
 
-    // xprintf("Keycode: %d, Pressed: %d\n", keycode, record->event.pressed);
     if (keycode == COMMAND_LKEY) {
         return lcmd_push_ime_off(keycode, record);
     }
@@ -81,13 +85,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     
     reset_cmd_pressed();
 
-    // printf("Size of os_type: %zu\n", sizeof((int)os_type));  // サイズを確認
-    // printf("Value of os_type: %d\n", (int)os_type);  // 値を確認
-    // printf("Size of BASE_WIN: %zu\n", sizeof((int)BASE_WIN));  // サイズを確認
-    // printf("Value of BASE_WIN: %d\n", (int)BASE_WIN);  // 値を確認
-
-
-    // xprintf("currentLayer: %d, %d\n", (int)os_type, (int)BASE_WIN);
     if((int)os_type == (int)BASE_WIN) {
         printf("only windows\n");
         return windows_remap(keycode, record);
@@ -98,7 +95,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      [MAC_BASE] = LAYOUT_ansi_84(
-          KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  BL_DOWN,  BL_UP,    KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SNAP,  KC_DEL,   BL_STEP,
+          KC_ESC,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_SNAP,  KC_DEL,  KC_F13,
           KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
           KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
           KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_ENT,             KC_HOME,
@@ -107,7 +104,7 @@ uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      ),
 
      [MAC_FN] = LAYOUT_ansi_84(
-          KC_TRNS,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_TRNS,  KC_TRNS,  KC_F13,
+          KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  BL_DOWN,  BL_UP,    KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SNAP,  KC_DEL,   BL_STEP,
           KC_TRNS,  BT_HST1,  BT_HST2,  BT_HST3,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,
           BL_TOGG,  BL_STEP,  BL_UP,    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,
           KC_TRNS,  KC_TRNS,  BL_DOWN,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,            KC_TRNS,

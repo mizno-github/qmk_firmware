@@ -1,1 +1,1 @@
-#define COMBO_COUNT 2  // 組み合わせが1つの場合
+#define COMBO_COUNT 6
