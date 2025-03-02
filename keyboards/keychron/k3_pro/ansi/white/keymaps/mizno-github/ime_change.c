@@ -6,6 +6,7 @@ uint16_t CONTROLL_KEY = KC_LCMMD;
 uint16_t WINDOWS_KEY = KC_LOPTN;
 uint16_t COMMAND_LKEY = KC_LCMMD;
 uint16_t COMMAND_RKEY = KC_RCMMD;
+uint16_t FN_W_KEY = S(KC_2);
 extern uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS]; 
 
 
@@ -107,6 +108,7 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
         COMMAND_RKEY = KC_RCMMD;
         os_type = (os_t)BASE_MAC;
     }
+    keymaps[MAC_FN][2][2] = FN_W_KEY;
     keymaps[MAC_BASE][5][0] = CONTROLL_KEY;
     keymaps[MAC_BASE][5][1] = WINDOWS_KEY;
     keymaps[MAC_BASE][5][2] = COMMAND_LKEY;

@@ -1,17 +1,15 @@
 #include "windows_remap.h"
 bool windows_remap(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
+        xprintf("windows_remap_code: %d", keycode);
         switch (keycode) {
             case KC_2:
-                print("input KC_2\n");
                 if (get_mods() & MOD_MASK_SHIFT) {
                     uint8_t mods = get_mods();
                     clear_mods();
-                    print("true shift in KC_2\n");
                     tap_code(KC_LBRC); // Shift + 2 → @
                     set_mods(mods);
                 } else {
-                    print("false shift in KC_2\n");
                     tap_code(KC_2);
                 }
                 return false;
@@ -108,15 +106,17 @@ bool windows_remap(uint16_t keycode, keyrecord_t *record) {
                 return false;
             case KC_GRV:
                 if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code16(S(KC_LBRC));
-                } else {
                     tap_code16(S(KC_EQL));
+                } else {
+                    tap_code16(S(KC_LBRC));
                 }
                 return false;
         }
-        print("not matched\n");
-        xprintf("keycode: %d\n", keycode);
 
+        if (keycode == FN_W_KEY) {
+            tap_code(KC_LBRC); // Shift + 2 → @
+            return false;
+        }
     }
     return true;
 }
