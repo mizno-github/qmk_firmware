@@ -39,6 +39,7 @@
 #include "ime_change.h"
 #include "windows_remap.h"
 uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS];
+#define HOLD_TIME 125
 
 typedef const uint16_t comb_keys_t[];
 static PROGMEM comb_keys_t
@@ -61,6 +62,14 @@ combo_t key_combos[COMBO_COUNT] = {
     COMBO(alt_spc_to_alt_for_win_combo, KC_RALT), // alt + spc → KC_ALT
 };
 
+void matrix_scan_user(void) {
+    if (is_key_long_hold && timer_elapsed(press_start_time) >= HOLD_TIME) {
+        is_key_long_hold = false;
+        press_start_time = 0;
+        register_code(hold_keycode);  // HOLD_TIMEが経過したら長押ししていることにする
+    }
+}
+
 // keyを押された時、離された時にtrueを返すとkeyが押された、離されたという挙動になる
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // 押したキーの位置を取得して表示
@@ -70,16 +79,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // シリアル出力で位置を表示
     xprintf("Key pressed: row = %d, col = %d, keycode = %d\n", row, col, keycode);
 
+    // IMEの切り替え
     if (keycode == COMMAND_LKEY) {
         return lcmd_push_ime_off(keycode, record);
     }
     if (keycode == COMMAND_RKEY) {
         return rcmd_push_ime_on(keycode, record);
     }
+
     switch(keycode) {
         case KC_CAPS:
+            // caps lockとescを切り分ける
             return caps_push_to_esc(keycode, record);
         case KC_F13:
+            // osタイプに合わせコマンド位置を合わせる
             return judge_os_type(keycode, record);
     }
     
@@ -105,7 +118,7 @@ uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
      [MAC_FN] = LAYOUT_ansi_84(
           KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  BL_DOWN,  BL_UP,    KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SNAP,  KC_DEL,   BL_STEP,
-          KC_TRNS,  BT_HST1,  BT_HST2,  BT_HST3,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,
+          KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,
           KC_TRNS,  S(KC_1),  0,  S(KC_3),  S(KC_4),  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,
           KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  BL_DOWN,  BL_UP,    BL_STEP,  BL_TOGG,  KC_TRNS,            KC_TRNS,            KC_TRNS,
           KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  BAT_LVL,  NK_TOGG,  KC_TRNS,  BT_HST1,  BT_HST2,  BT_HST3,            KC_TRNS,  KC_TRNS,  KC_TRNS,

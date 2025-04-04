@@ -2,13 +2,16 @@
 #include "keymap.h" 
 extern uint16_t CONTROLL_KEY;
 
-uint16_t CONTROLL_KEY = KC_LCMMD;
-uint16_t WINDOWS_KEY = KC_LOPTN;
-uint16_t COMMAND_LKEY = KC_LCMMD;
-uint16_t COMMAND_RKEY = KC_RCMMD;
+uint16_t CONTROLL_KEY;
+uint16_t WINDOWS_KEY;
+uint16_t COMMAND_LKEY;
+uint16_t COMMAND_RKEY;
 uint16_t FN_W_KEY = S(KC_2);
 extern uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS]; 
-
+static uint8_t  mac_keycode[4]    = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
+bool is_key_long_hold = false;
+uint16_t press_start_time = 0;
+uint16_t hold_keycode = KC_NO;
 
 static bool lcmd_pressed = false;  // lcmd単独押しを検知するフラグ
 static bool rcmd_pressed = false;  // rcmd単独押しを検知するフラグ
@@ -24,47 +27,55 @@ void reset_cmd_pressed(void) {
 // 左コマンドキーのみ押下でIMEをOFFにする
 // コマンドキー＋何かでコマンド＋何かの動きになる
 bool lcmd_push_ime_off(uint16_t keycode, keyrecord_t *record) {
+    uint16_t new_keycode = mac_keycode[keycode - KC_LOPTN];
     if (record->event.pressed) {
-        lcmd_pressed = true;
-        return true; // 通常の lcmd の動作を維持する
+        press_start_time = timer_read();
+        hold_keycode = new_keycode;
+        is_key_long_hold = true;
+        return false;
     } else {
-        if(lcmd_pressed) {
-            uint8_t mods = get_mods();  // 現在の修飾キーを取得
-            clear_mods();               // すべての修飾キーを解除
+        if (is_key_long_hold) {
             if ((int)os_type == (int)BASE_WIN) {
                 tap_code(KC_INT5);
-                set_mods(mods);             // 元の修飾キー状態に戻す
-                tap_code(KC_F13); // 適当なkeyを押してalt単押しの挙動をキャンセルする
+                is_key_long_hold = false;
+                press_start_time = 0;
+                return false;
             } else {
                 tap_code(KC_LNG2);          // IME 切り替え
-                set_mods(mods);             // 元の修飾キー状態に戻す
+                is_key_long_hold = false;
+                press_start_time = 0;
+                return true;
             }
-
         }
-        lcmd_pressed = false;
-        return true;
+
+        unregister_code(new_keycode);
+        return false;
     }
 }
 
 bool rcmd_push_ime_on(uint16_t keycode, keyrecord_t *record) {
+    uint16_t new_keycode = mac_keycode[keycode - KC_LOPTN];
     if (record->event.pressed) {        
-        rcmd_pressed = true;
-        return true; // 通常の lcmd の動作を維持する
+        press_start_time = timer_read();
+        hold_keycode = new_keycode;
+        is_key_long_hold = true;
+        return false;
     } else {
-        if(rcmd_pressed) {
-            uint8_t mods = get_mods();  // 現在の修飾キーを取得
-            clear_mods();               // すべての修飾キーを解除
+        if (is_key_long_hold) {
             if ((int)os_type == (int)BASE_WIN) {
                 tap_code(KC_INT4);
-                set_mods(mods);             // 元の修飾キー状態に戻す
-                tap_code(KC_F13);
+                is_key_long_hold = false;
+                press_start_time = 0;
+                return false;
             } else {
                 tap_code(KC_LNG1);          // IME 切り替え
-                set_mods(mods);             // 元の修飾キー状態に戻す
+                is_key_long_hold = false;
+                press_start_time = 0;
+                return true;
             }
         }
-        rcmd_pressed = false;
-        return true;
+        unregister_code(new_keycode);
+        return false;
     }
 }
 
@@ -108,6 +119,7 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
         COMMAND_RKEY = KC_RCMMD;
         os_type = (os_t)BASE_MAC;
     }
+    xprintf("key is : %d, %d", COMMAND_LKEY, KC_LCMMD);
     keymaps[MAC_FN][2][2] = FN_W_KEY;
     keymaps[MAC_BASE][5][0] = CONTROLL_KEY;
     keymaps[MAC_BASE][5][1] = WINDOWS_KEY;

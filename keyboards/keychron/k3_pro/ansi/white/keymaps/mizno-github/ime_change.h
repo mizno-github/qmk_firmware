@@ -15,6 +15,9 @@ extern uint16_t WINDOWS_KEY;
 extern uint16_t COMMAND_LKEY;
 extern uint16_t COMMAND_RKEY;
 
+extern bool is_key_long_hold;
+extern uint16_t press_start_time;
+extern uint16_t hold_keycode;
 
 void reset_cmd_pressed(void);
 bool lcmd_push_ime_off(uint16_t keycode, keyrecord_t *record);
