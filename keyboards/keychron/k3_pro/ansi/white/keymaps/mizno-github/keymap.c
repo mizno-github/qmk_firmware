@@ -36,31 +36,21 @@
 #include "keymap.h"
 #include QMK_KEYBOARD_H
 #define DEBUG_ENABLE
-#include "ime_change.h"
-#include "windows_remap.h"
+#include "combo/typo_ignore_combo.h"
+#include "process/ime_change.h"
+#include "process/windows_remap.h"
+
 uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS];
 #define HOLD_TIME 125
 
-typedef const uint16_t comb_keys_t[];
-static PROGMEM comb_keys_t
-    // enter + |, ], 'の同時押しをタイポとみなし何も入力していないことにする
-    cancel_ent_bsls_combo = {KC_ENT, KC_BSLS, COMBO_END},
-    cancel_ent_rbrc_combo = {KC_ENT, KC_RBRC, COMBO_END},
-    cancel_ent_quot_combo = {KC_ENT, KC_QUOT, COMBO_END},
-    // マイナス + 0, =の同時押しをタイポとみなし何も入力していないことにする
-    cancel_mins_0_combo = {KC_MINS, KC_0, COMBO_END},
-    cancel_mins_eql_combo = {KC_MINS, KC_EQL, COMBO_END},
-    // windowsのalt単押しの挙動ができなくなってしまったため別の操作でalt単押しを実現する
-    alt_spc_to_alt_for_win_combo = {KC_RALT, KC_SPC};
+bool is_key_long_hold = false;
+uint16_t press_start_time = 0;
+uint16_t hold_keycode = KC_NO;
 
-combo_t key_combos[COMBO_COUNT] = {
-    COMBO(cancel_ent_bsls_combo, KC_F13),  // Enter + | → F13
-    COMBO(cancel_ent_rbrc_combo, KC_F13),  // Enter + ] → F13
-    COMBO(cancel_ent_quot_combo, KC_F13),  // Enter + ' → F13
-    COMBO(cancel_mins_0_combo, KC_F13),  // マイナス + 0 → F13
-    COMBO(cancel_mins_eql_combo, KC_F13),  // マイナス + = → F13
-    COMBO(alt_spc_to_alt_for_win_combo, KC_RALT), // alt + spc → KC_ALT
-};
+uint16_t CONTROLL_KEY;
+uint16_t WINDOWS_KEY;
+uint16_t COMMAND_LKEY;
+uint16_t COMMAND_RKEY;
 
 void matrix_scan_user(void) {
     if (is_key_long_hold && timer_elapsed(press_start_time) >= HOLD_TIME) {
@@ -95,8 +85,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // osタイプに合わせコマンド位置を合わせる
             return judge_os_type(keycode, record);
     }
-    
-    reset_cmd_pressed();
 
     if((int)os_type == (int)BASE_WIN) {
         printf("only windows\n");

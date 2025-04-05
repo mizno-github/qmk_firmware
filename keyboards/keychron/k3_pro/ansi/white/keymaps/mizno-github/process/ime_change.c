@@ -1,17 +1,11 @@
 #include "ime_change.h"
-#include "keymap.h" 
-extern uint16_t CONTROLL_KEY;
+#include "os_detection.h"
+#include QMK_KEYBOARD_H
+#include "../keymap.h"
 
-uint16_t CONTROLL_KEY;
-uint16_t WINDOWS_KEY;
-uint16_t COMMAND_LKEY;
-uint16_t COMMAND_RKEY;
 uint16_t FN_W_KEY = S(KC_2);
 extern uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS]; 
 static uint8_t  mac_keycode[4]    = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
-bool is_key_long_hold = false;
-uint16_t press_start_time = 0;
-uint16_t hold_keycode = KC_NO;
 
 os_t os_type = BASE_WIN; // 初期値（適宜変更）
 
@@ -111,6 +105,8 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
         os_type = (os_t)BASE_MAC;
     }
     xprintf("key is : %d, %d", COMMAND_LKEY, KC_LCMMD);
+
+    // NOTE: macの場合はshift + 2だがwindowsは違うため
     keymaps[MAC_FN][2][2] = FN_W_KEY;
     keymaps[MAC_BASE][5][0] = CONTROLL_KEY;
     keymaps[MAC_BASE][5][1] = WINDOWS_KEY;

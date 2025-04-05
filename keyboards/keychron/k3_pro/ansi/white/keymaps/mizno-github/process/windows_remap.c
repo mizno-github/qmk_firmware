@@ -1,4 +1,8 @@
 #include "windows_remap.h"
+#include "os_detection.h"
+#include QMK_KEYBOARD_H
+#include "../keymap.h"
+
 bool windows_remap(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         xprintf("windows_remap_code: %d", keycode);
