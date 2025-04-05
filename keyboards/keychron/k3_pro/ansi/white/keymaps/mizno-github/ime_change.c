@@ -13,16 +13,7 @@ bool is_key_long_hold = false;
 uint16_t press_start_time = 0;
 uint16_t hold_keycode = KC_NO;
 
-static bool lcmd_pressed = false;  // lcmd単独押しを検知するフラグ
-static bool rcmd_pressed = false;  // rcmd単独押しを検知するフラグ
-static bool lsft_pressed = false;  // lsft単独押しを検知するフラグ
 os_t os_type = BASE_WIN; // 初期値（適宜変更）
-
-void reset_cmd_pressed(void) {
-    lcmd_pressed = false;
-    rcmd_pressed = false;
-    lsft_pressed = false;
-}
 
 // 左コマンドキーのみ押下でIMEをOFFにする
 // コマンドキー＋何かでコマンド＋何かの動きになる
