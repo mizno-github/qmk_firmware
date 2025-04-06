@@ -3,7 +3,6 @@
 #include QMK_KEYBOARD_H
 #include "../keymap.h"
 
-uint16_t FN_W_KEY = S(KC_2);
 extern uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS]; 
 static uint8_t  mac_keycode[4]    = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
 
