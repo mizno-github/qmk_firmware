@@ -137,18 +137,18 @@ uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      [MAC_TENKEY] = LAYOUT_ansi_84(
           KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
           KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_DOT ,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,
-          KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_7,     KC_8,     KC_9,     KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,
-          KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_6,     KC_5,     KC_6,     KC_NO,    KC_NO,              KC_TRNS,            KC_TRNS,
-          KC_TRNS,            KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_0,     KC_1,     KC_2,     KC_3,     KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,
+          KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_7,     KC_8,     KC_9,     KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,
+          KC_TRNS,  KC_TRNS,  KC_NO,    KC_TRNS,  KC_TRNS,  KC_NO,    KC_NO,    KC_4,     KC_5,     KC_6,     KC_NO,    KC_NO,              KC_TRNS,            KC_TRNS,
+          KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_NO,    KC_0,     KC_1,     KC_2,     KC_3,     KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,
           KC_TRNS,  KC_TRNS,  KC_TRNS,                                KC_TRNS,                                KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS
        ),
 
      [MAC_NAV] = LAYOUT_ansi_84(
           KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
           KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_TRNS,            KC_TRNS,
-          KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,
-          KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  KC_NO,    KC_NO,              KC_TRNS,            KC_TRNS,
-          KC_TRNS,            KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,  KC_TRNS,  KC_TRNS,
+          KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,
+          KC_TRNS,  KC_TRNS,  KC_NO,    KC_TRNS,  KC_TRNS,  KC_NO,    KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  KC_NO,    KC_NO,              KC_TRNS,            KC_TRNS,
+          KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,  KC_TRNS,  KC_TRNS,
           KC_TRNS,  KC_TRNS,  KC_TRNS,                                KC_TRNS,                                KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS
        ),
 
