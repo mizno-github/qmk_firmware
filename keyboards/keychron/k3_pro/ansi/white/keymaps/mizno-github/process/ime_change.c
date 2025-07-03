@@ -3,7 +3,6 @@
 #include QMK_KEYBOARD_H
 #include "../keymap.h"
 
-uint16_t FN_W_KEY = S(KC_2);
 extern uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS]; 
 static uint8_t  mac_keycode[4]    = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
 
@@ -88,13 +87,19 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
     uint8_t leds = host_keyboard_leds();
     xprintf("leds: %d\n", leds);
 
-    if (leds) {
+    change_os_mode(leds);
+
+    return false;
+}
+
+void change_os_mode (bool isWindows) {
+    if (isWindows) {
         xprintf("change the windows etc...\n");
         CONTROLL_KEY = KC_LCTL;
         WINDOWS_KEY = KC_LCMMD;
         COMMAND_LKEY = KC_LOPTN;
         COMMAND_RKEY = KC_RALT;
-        os_type = (os_t)BASE_WIN;
+        os_type = (os_t)BASE_MAC;
         xprintf("current is: %d\n", os_type);
     } else {
         xprintf("chage the mac\n");
@@ -104,7 +109,7 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
         COMMAND_RKEY = KC_RCMMD;
         os_type = (os_t)BASE_MAC;
     }
-    xprintf("key is : %d, %d", COMMAND_LKEY, KC_LCMMD);
+    xprintf("key is : %d, %d\n", COMMAND_LKEY, KC_LCMMD);
 
     // NOTE: macの場合はshift + 2だがwindowsは違うため
     keymaps[MAC_FN][2][2] = FN_W_KEY;
@@ -112,5 +117,4 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
     keymaps[MAC_BASE][5][1] = WINDOWS_KEY;
     keymaps[MAC_BASE][5][2] = COMMAND_LKEY;
     keymaps[MAC_BASE][5][10] = COMMAND_RKEY;
-    return false;
 }
