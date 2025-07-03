@@ -76,9 +76,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // IMEの切り替え
     if (keycode == COMMAND_LKEY) {
+        if (is_press) {
+            layer_move((int)MAC_BASE);
+        }
         return lcmd_push_ime_off(keycode, record);
     }
     if (keycode == COMMAND_RKEY) {
+        if (is_press) {
+            layer_move((int)MAC_BASE);
+        }
         return rcmd_push_ime_on(keycode, record);
     }
 
@@ -100,6 +106,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_K:
         case KC_5:
         case KC_UP:
+            // 半角にする
+            if ((int)os_type == (int)BASE_WIN && is_esc_pressed) {
+                tap_code(KC_INT5);
+            } else if (is_esc_pressed) {
+                tap_code(KC_LNG2);
+            }
             return move_layer(record, (int)MAC_TENKEY);
         case KC_L:
         case KC_6:
@@ -146,7 +158,7 @@ uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      [MAC_NAV] = LAYOUT_ansi_84(
           KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
           KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_TRNS,            KC_TRNS,
-          KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,
+          KC_TRNS,  KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,
           KC_TRNS,  KC_TRNS,  KC_NO,    KC_TRNS,  KC_TRNS,  KC_NO,    KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  KC_NO,    KC_NO,              KC_TRNS,            KC_TRNS,
           KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,              KC_TRNS,  KC_TRNS,  KC_TRNS,
           KC_TRNS,  KC_TRNS,  KC_TRNS,                                KC_TRNS,                                KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS
