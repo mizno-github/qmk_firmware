@@ -1,6 +1,7 @@
 # This file intentionally blank
 BOOTLOADER = stm32-dfu
 COMBO_ENABLE = yes
+COMMAND_ENABLE = yes
 SRC += combo/typo_ignore_combo.c
 SRC += process/move_layer.c
 SRC += process/ime_change.c

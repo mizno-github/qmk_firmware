@@ -14,5 +14,6 @@ bool lcmd_push_ime_off(uint16_t keycode, keyrecord_t *record);
 bool rcmd_push_ime_on(uint16_t keycode, keyrecord_t *record);
 bool caps_push_to_esc(uint16_t keycode, keyrecord_t *record);
 bool judge_os_type(uint16_t keycode, keyrecord_t *record);
+void change_os_mode(bool isWindows);
 
 #endif

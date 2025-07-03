@@ -117,12 +117,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_6:
         case KC_RIGHT:
             return move_layer(record, (int)MAC_NAV);
+        case SET_WIN:
+            xprintf("is mac");
+            change_os_mode(false);
+            return false;
+        case SET_MAC:
+            xprintf("is windows");
+            change_os_mode(true);
+            return false;
     }
 
-    if((int)os_type == (int)BASE_WIN) {
-        printf("only windows\n");
-        return windows_remap(keycode, record);
-    }
+    // if((int)os_type == (int)BASE_WIN) {
+    //     printf("only windows\n");
+    //     return windows_remap(keycode, record);
+    // }
 
     return true;
 }
