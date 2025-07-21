@@ -50,7 +50,6 @@ bool is_esc_pressed = false;
 uint16_t press_start_time = 0;
 uint16_t hold_keycode = KC_NO;
 
-uint16_t FN_W_KEY = S(KC_2);
 uint16_t CONTROLL_KEY;
 uint16_t WINDOWS_KEY;
 uint16_t COMMAND_LKEY;
@@ -98,7 +97,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case KC_F13:
             // osタイプに合わせコマンド位置を合わせる
-            return judge_os_type(keycode, record);
+            // judge_os_type(keycode, record);
+            return false;
         case KC_J:
         case KC_4:
         case KC_DOWN:
@@ -117,20 +117,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_6:
         case KC_RIGHT:
             return move_layer(record, (int)MAC_NAV);
-        case SET_WIN:
-            xprintf("is mac");
-            change_os_mode(false);
-            return false;
         case SET_MAC:
-            xprintf("is windows");
-            change_os_mode(true);
+            xprintf("is mac\n");
+            change_os_mode(SET_MAC);
+            return false;
+        case SET_WIN:
+            xprintf("is windows\n");
+            change_os_mode(SET_WIN);
+            return false;
+        case SET_UBU:
+            xprintf("is ubuntu\n");
+            change_os_mode(SET_UBU);
             return false;
     }
 
-    // if((int)os_type == (int)BASE_WIN) {
-    //     printf("only windows\n");
-    //     return windows_remap(keycode, record);
-    // }
+    if((int)os_type == (int)BASE_WIN) {
+        printf("only windows\n");
+        return windows_remap(keycode, record);
+    }
 
     return true;
 }

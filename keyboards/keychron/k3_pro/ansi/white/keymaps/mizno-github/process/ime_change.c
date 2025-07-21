@@ -3,8 +3,9 @@
 #include QMK_KEYBOARD_H
 #include "../keymap.h"
 
+uint16_t FN_W_KEY = S(KC_2);
 extern uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS]; 
-static uint8_t  mac_keycode[4]    = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
+static uint8_t  mac_keycode[4] = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
 
 os_t os_type = BASE_WIN; // 初期値（適宜変更）
 
@@ -92,22 +93,34 @@ bool judge_os_type (uint16_t keycode, keyrecord_t *record) {
     return false;
 }
 
-void change_os_mode (bool isWindows) {
-    if (isWindows) {
-        xprintf("change the windows etc...\n");
-        CONTROLL_KEY = KC_LCTL;
-        WINDOWS_KEY = KC_LCMMD;
-        COMMAND_LKEY = KC_LOPTN;
-        COMMAND_RKEY = KC_RALT;
-        os_type = (os_t)BASE_MAC;
-        xprintf("current is: %d\n", os_type);
-    } else {
-        xprintf("chage the mac\n");
-        CONTROLL_KEY = KC_LCMMD;
-        WINDOWS_KEY = KC_LOPTN;
-        COMMAND_LKEY = KC_LCMMD;
-        COMMAND_RKEY = KC_RCMMD;
-        os_type = (os_t)BASE_MAC;
+void change_os_mode (uint16_t os) {
+    switch(os) {
+        case SET_WIN:
+            xprintf("change the windows\n");
+            CONTROLL_KEY = KC_LCTL;
+            WINDOWS_KEY = KC_LCMMD;
+            COMMAND_LKEY = KC_LOPTN;
+            COMMAND_RKEY = KC_RALT;
+            os_type = (os_t)BASE_MAC;
+            xprintf("current is: %d\n", os_type);
+            break;
+        case SET_MAC:
+            xprintf("chage the mac\n");
+            CONTROLL_KEY = KC_LCMMD;
+            WINDOWS_KEY = KC_LOPTN;
+            COMMAND_LKEY = KC_LCMMD;
+            COMMAND_RKEY = KC_RCMMD;
+            os_type = (os_t)BASE_MAC;
+            break;
+        case SET_UBU:
+            xprintf("change the ubu\n");
+            CONTROLL_KEY = KC_LCTL;
+            WINDOWS_KEY = KC_LCMMD;
+            COMMAND_LKEY = KC_LOPTN;
+            COMMAND_RKEY = KC_RALT;
+            os_type = (os_t)BASE_WIN;
+            xprintf("current is: %d\n", os_type);
+            break;
     }
     xprintf("key is : %d, %d\n", COMMAND_LKEY, KC_LCMMD);
 
