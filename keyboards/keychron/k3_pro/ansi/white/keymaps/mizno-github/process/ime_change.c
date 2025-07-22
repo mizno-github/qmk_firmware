@@ -20,7 +20,7 @@ bool lcmd_push_ime_off(uint16_t keycode, keyrecord_t *record) {
         return false;
     } else {
         if (is_key_long_hold) {
-            if ((int)os_type == (int)BASE_WIN) {
+            if ((int)os_type == (int)BASE_UBU) {
                 tap_code(KC_INT5);
                 is_key_long_hold = false;
                 press_start_time = 0;
@@ -47,7 +47,7 @@ bool rcmd_push_ime_on(uint16_t keycode, keyrecord_t *record) {
         return false;
     } else {
         if (is_key_long_hold) {
-            if ((int)os_type == (int)BASE_WIN) {
+            if ((int)os_type == (int)BASE_UBU) {
                 tap_code(KC_INT4);
                 is_key_long_hold = false;
                 press_start_time = 0;
@@ -101,7 +101,7 @@ void change_os_mode (uint16_t os) {
             WINDOWS_KEY = KC_LCMMD;
             COMMAND_LKEY = KC_LOPTN;
             COMMAND_RKEY = KC_RALT;
-            os_type = (os_t)BASE_MAC;
+            os_type = (os_t)BASE_WIN;
             xprintf("current is: %d\n", os_type);
             break;
         case SET_MAC:
@@ -118,7 +118,7 @@ void change_os_mode (uint16_t os) {
             WINDOWS_KEY = KC_LCMMD;
             COMMAND_LKEY = KC_LOPTN;
             COMMAND_RKEY = KC_RALT;
-            os_type = (os_t)BASE_WIN;
+            os_type = (os_t)BASE_UBU;
             xprintf("current is: %d\n", os_type);
             break;
     }

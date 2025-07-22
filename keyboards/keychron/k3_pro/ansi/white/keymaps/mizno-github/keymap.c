@@ -26,7 +26,7 @@
   * qmk config user.keymap=mizno-github      
   * qmk config user.keyboard=keychron/k3_pro/ansi/white       
   * qmk new-keymap
-  * qmk compile -kb keychron/k3_pro/ansi/white      
+  * qmk compile -kb keychron/k3_pro/ansi/white
   * 
   * https://docs.qmk.fm/keycodes_basic
   * 
@@ -107,7 +107,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_5:
         case KC_UP:
             // 半角にする
-            if ((int)os_type == (int)BASE_WIN && is_esc_pressed) {
+            if ((int)os_type == (int)BASE_UBU && is_esc_pressed) {
                 tap_code(KC_INT5);
             } else if (is_esc_pressed) {
                 tap_code(KC_LNG2);
@@ -129,9 +129,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             xprintf("is ubuntu\n");
             change_os_mode(SET_UBU);
             return false;
+        case SET_CTRL:
+            xprintf("set ctrl\n");
+            uint8_t mods = 8;
+
+            if (is_press) {
+                register_mods(mods); 
+            } else {
+                unregister_mods(mods);
+            }
+            return false;
     }
 
-    if((int)os_type == (int)BASE_WIN) {
+    if((int)os_type == (int)BASE_UBU) {
         printf("only windows\n");
         return windows_remap(keycode, record);
     }

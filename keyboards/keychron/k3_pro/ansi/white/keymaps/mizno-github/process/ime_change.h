@@ -6,7 +6,8 @@
 typedef uint8_t os_t;
 enum {
     BASE_WIN = 0,
-    BASE_MAC = 1
+    BASE_MAC = 1,
+    BASE_UBU = 2,
 };
 extern os_t os_type;
 
