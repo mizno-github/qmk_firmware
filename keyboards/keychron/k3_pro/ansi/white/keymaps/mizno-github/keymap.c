@@ -38,7 +38,6 @@
 #define DEBUG_ENABLE
 #include "combo/typo_ignore_combo.h"
 #include "process/ime_change.h"
-#include "process/windows_remap.h"
 #include "process/move_layer.h"
 #include "state/manage_esc_state.h"
 
@@ -139,11 +138,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_mods(mods);
             }
             return false;
-    }
-
-    if((int)os_type == (int)BASE_UBU) {
-        printf("only windows\n");
-        return windows_remap(keycode, record);
     }
 
     return true;
