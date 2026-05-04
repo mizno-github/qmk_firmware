@@ -19,8 +19,10 @@ static PROGMEM comb_keys_t
     set_mac_combo = {KC_PGUP, KC_PGDN, COMBO_END},
     set_ubu_combo = {KC_HOME, KC_PGDN, COMBO_END},
     // ctrl  + ◯ を j + ◯ でできるようにする
-    set_ctrl_combo = {KC_J, KC_K, COMBO_END},
-    set_ctrl_combo_layer = {KC_UP, KC_DOWN, COMBO_END};
+    set_ctrl_right_base_combo = {KC_J, KC_K, COMBO_END},
+    set_ctrl_right_nav_combo = {KC_DOWN, KC_UP, COMBO_END},
+    set_ctrl_right_tenkey_combo = {KC_4, KC_5, COMBO_END},
+    set_ctrl_left_base_combo = {KC_D, KC_F, COMBO_END};
 
 // comboを追加する場合、config.hの設定も変更すること
 combo_t key_combos[COMBO_COUNT] = {
@@ -33,6 +35,10 @@ combo_t key_combos[COMBO_COUNT] = {
     COMBO(set_win_combo, SET_WIN),
     COMBO(set_mac_combo, SET_MAC),
     COMBO(set_ubu_combo, SET_UBU),
-    COMBO(set_ctrl_combo, SET_CTRL),
-    COMBO(set_ctrl_combo_layer, SET_CTRL),
+    // 右系コントロール
+    COMBO(set_ctrl_right_base_combo, SET_CTRL),
+    COMBO(set_ctrl_right_nav_combo, SET_CTRL),
+    COMBO(set_ctrl_right_tenkey_combo, SET_CTRL),
+    // 左系コントロール
+    COMBO(set_ctrl_left_base_combo, SET_CTRL),
 };
