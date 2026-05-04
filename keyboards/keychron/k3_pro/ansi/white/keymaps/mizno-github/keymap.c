@@ -18,18 +18,18 @@
   * brew install qmk/qmk/qmk
   * qmk setup
   * https://github.com/Keychron/qmk_firmware/tree/bluetooth_playground/keyboards/keychron/k3_pro からフォーク
-  * git remote add upstream https://github.com/Keychron/qmk_firmware.git      
-  * git fetch upstream bluetooth_playground   
-  * git checkout bluetooth_playground    
-  * git remote remove upstream 
-  * qmk compile -kb keychron/k3_pro/ansi/white -km default  
-  * qmk config user.keymap=mizno-github      
-  * qmk config user.keyboard=keychron/k3_pro/ansi/white       
+  * git remote add upstream https://github.com/Keychron/qmk_firmware.git
+  * git fetch upstream bluetooth_playground
+  * git checkout bluetooth_playground
+  * git remote remove upstream
+  * qmk compile -kb keychron/k3_pro/ansi/white -km default
+  * qmk config user.keymap=mizno-github
+  * qmk config user.keyboard=keychron/k3_pro/ansi/white
   * qmk new-keymap
   * qmk compile -kb keychron/k3_pro/ansi/white
-  * 
+  *
   * https://docs.qmk.fm/keycodes_basic
-  * 
+  *
   * https://qmk.fm/toolbox toolbox公式
  */
 #include "os_detection.h"
@@ -134,7 +134,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             uint8_t mods = 8;
 
             if (is_press) {
-                register_mods(mods); 
+                register_mods(mods);
             } else {
                 unregister_mods(mods);
             }
