@@ -130,7 +130,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case SET_CTRL:
             xprintf("set ctrl\n");
-            uint8_t mods = 8;
+            uint8_t mods;
+            if ((int)os_type == (int)BASE_MAC) {
+                mods = 8;
+            } else {
+                mods = 16;
+            }
 
             if (is_press) {
                 register_mods(mods);
