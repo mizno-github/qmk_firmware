@@ -9,6 +9,9 @@ enum custom_keycodes {
     SET_MAC,
     SET_UBU,
     SET_CTRL,
+    MOVE_NAV,
+    MOVE_NAV_SHIFT,
+    MOVE_TENKEY,
 };
 
 // 長押しキー制御

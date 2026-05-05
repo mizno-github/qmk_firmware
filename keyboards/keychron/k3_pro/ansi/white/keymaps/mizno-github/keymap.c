@@ -116,6 +116,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_6:
         case KC_RIGHT:
             return move_layer(record, (int)MAC_NAV);
+        case MOVE_NAV:
+            xprintf("set nav\n");
+            return io_layer(record, (int)MAC_NAV);
+        case MOVE_NAV_SHIFT:
+            if (record->event.pressed) {
+                register_mods(MOD_BIT(KC_LSFT));
+            } else {
+                unregister_mods(MOD_BIT(KC_LSFT));
+            }
+            return io_layer(record, (int)MAC_NAV);
+        case MOVE_TENKEY:
+            xprintf("set tenkey\n");
+            return io_layer(record, (int)MAC_TENKEY);
         case SET_MAC:
             xprintf("is mac\n");
             change_os_mode(SET_MAC);

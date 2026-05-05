@@ -17,3 +17,13 @@ bool move_layer(keyrecord_t *record, int layer) {
     return true;
   }
 }
+
+bool io_layer(keyrecord_t *record, int layer) {
+  if (record->event.pressed) {
+    layer_on(layer);
+    return false;
+  } else {
+    layer_off(layer);
+    return false;
+  }
+}
